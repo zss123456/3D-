@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <style>
+            body {
+                background-color: black;
+            }
+            #pre {
+                perspective: 800px;
+            }
+            #warp {
+                position: relative;
+                width: 113px;
+                height: 200px;
+                margin: 150px auto;
+                /*border: 1px solid #fff;*/
+                transform-style: preserve-3d;
+                transform: rotateX(-15deg) rotateY(0deg);
+                transition: 1s;
+            }
+            #warp img {
+                position: absolute;
+                top: 0;
+                width: 113px;
+                height: 200px;
+                border: 1px solid #fff;
+                border-radius: 5px;
+                transform: rotateX(0deg) rotateY(0deg);
+                transition: 0s;
+                padding: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="pre">
+            <div id="warp">
+                <img src="images/13.jpg" alt="">
+                <img src="images/15.jpg" alt="">
+                <img src="images/16.jpg" alt="">
+                <img src="images/17.jpg" alt="">
+                <img src="images/18.jpg" alt="">
+                <img src="images/20.jpg" alt="">
+                <img src="images/11.jpg" alt="">
+                <img src="images/5.jpg" alt="">
+                <img src="images/3.jpg" alt="">
+                <img src="images/10.jpg" alt="">
+            </div>
+        </div>
+        <script type="text/javascript">
+            window.onload = function() {
+                var oImg = document.getElementsByTagName("img");
+                var oWarp = document.getElementById("warp");
+                var Deg = 360 / oImg.length;
+                Array.prototype.forEach.call(oImg,function(el,index){
+                    el.style.transform = "rotateY("+Deg*index+"deg) translateZ(350px)";
+                    el.style.zIndex = -index;
+                    el.style.transition = 1+index*0.2+"s";
+                });
+
+
+                var nowX,nowY,  //现在鼠标坐标
+                    lastX,lastY,  //上次鼠标坐标
+                    minusX,minusY,  //移动距离
+                    roX = -10,roY = 0;  //旋转角度
+                document.onmousedown = function(ev) {
+                    var ev = ev || window.event;
+                   // console.log(ev.clientX,ev.clientY);
+
+                        lastX = ev.clientX;
+                        lastY = ev.clientY;
+
+                    this.onmouseover = function(ev) {
+                        var ev = ev || window.event;
+
+                        nowX = ev.clientX;
+                        nowY = ev.clientY;
+
+
+                        minusX = nowX-lastX;
+                        minusY = nowY-lastY;
+
+                        roY += minusX;
+                        roX -= minusY;
+
+                        oWarp.style.transform = "rotateX("+roX+"deg) rotateY("+roY+"deg)";
+                        lastX = nowX;
+                        lastY = nowY;
+                        //console.log(nowX);
+                    }
+                    this.onmouseup = function() {
+                        this.onmouseover = null;
+                        this.onmouseup = null;
+                    }
+                }
+            }
+
+        </script>
+    </body>
+</html>
